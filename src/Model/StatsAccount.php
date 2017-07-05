@@ -15,7 +15,7 @@ use Orm\Model as Model;
  * @since       2014-10-17
  */
 
-class Account_Stats extends Model
+class StatsAccount extends Model
 {
 
 	protected static $_table_name = 'account_stats';

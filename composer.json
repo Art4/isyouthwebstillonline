@@ -1,9 +1,12 @@
 {
 	"require": {
 		"php": "^5.6 || ^7.0",
+		"doctrine/migrations": "^1.5",
+		"doctrine/orm": "^2.5",
 		"slim/slim": "^3.8",
+		"slim/twig-view": "^2.2",
 		"twig/twig": "1.*",
-		"youthweb/php-youthweb-api": "^0.3.0"
+		"youthweb/php-youthweb-api": "^0.5"
 	},
 	"config": {
 		"sort-packages": true
