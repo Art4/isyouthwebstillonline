@@ -6,6 +6,9 @@ define('DS', DIRECTORY_SEPARATOR);
 define('PUBLICPATH', __DIR__.DS.'public'.DS);
 define('ROOTPATH', realpath(__DIR__).DS);
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 $config_path = ROOTPATH . 'config';
 $env = getenv('SLIM_ENV') ?: 'development';
 
@@ -127,20 +130,6 @@ $container['view'] = function ($container)
 	$view->addExtension(new Slim\Views\TwigExtension($container['router'], $basePath));
 
 	return $view;
-};
-
-// Register cachepool on container
-$container['cachepool'] = function ($container)
-{
-	$filesystemAdapter = new \League\Flysystem\Adapter\Local(
-		$container['settings']['cachepool']['cache_path']
-	);
-
-	$filesystem = new \League\Flysystem\Filesystem($filesystemAdapter);
-
-	$pool = new \Cache\Adapter\Filesystem\FilesystemCachePool($filesystem, '/');
-
-	return $pool;
 };
 
 // Add routes to app

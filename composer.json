@@ -5,10 +5,14 @@
 		"doctrine/orm": "^2.5",
 		"slim/slim": "^3.8",
 		"slim/twig-view": "^2.2",
-		"twig/twig": "1.*",
 		"youthweb/php-youthweb-api": "^0.5"
 	},
 	"config": {
 		"sort-packages": true
+	},
+	"autoload": {
+		"psr-4": {
+			"Art4\\IsYouthwebStillOnline\\": "src"
+		}
 	}
 }

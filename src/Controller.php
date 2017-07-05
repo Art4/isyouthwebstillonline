@@ -1,41 +1,53 @@
 <?php
-/**
- * Fuel is a fast, lightweight, community driven PHP5 framework.
- *
- * @package    Fuel
- * @version    1.7
- * @author     Fuel Development Team
- * @license    MIT License
- * @copyright  2010 - 2014 Fuel Development Team
- * @link       http://fuelphp.com
- */
+namespace Art4\IsYouthwebStillOnline;
+
+use Interop\Container\ContainerInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 /**
- * The Welcome Controller.
- *
- * A basic controller example.  Has examples of how to set the
- * response body and status.
- *
- * @package  app
- * @extends  Controller
+ * Controller class
  */
-class Controller_Page extends Controller
+class Controller
 {
+	/**
+	 * Interop\Container\ContainerInterface $container
+	 */
+	private $container;
 
 	/**
-	 * The basic welcome message
+	 * Constructor
 	 *
-	 * @access  public
-	 * @return  Response
+	 * @param Interop\Container\ContainerInterface $container
 	 */
-	public function action_index()
+	public function __construct(ContainerInterface $container)
 	{
-		$stats = Model\Account_Stats::find('last');
+		$this->container = $container;
+	}
 
-		$view = View::forge('page/index')
-			->set('user_total', $stats->user_total)
-			->set('user_online', $stats->user_online);
+	/**
+	 * Zeigt die Startseite an
+	 *
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @param array $args
+	 *
+	 * @return ResponseInterface $response
+	 */
+	public function getIndex(ServerRequestInterface $request, ResponseInterface $response, $args)
+	{
+		$em = $this->container['em'];
 
-		return Response::forge($view);
+		$stats = $em->getRepository(Model\StatsAccount::class)->findOneBy(
+			[],
+			['created_at' => 'asc']
+		);
+
+		$this->container->view->render($response, 'index.twig', [
+			'user_total' => ( is_object($stats) ) ? $stats->getUserTotal() : 0,
+			'user_online' => ( is_object($stats) ) ? $stats->getUserOnline() : 0,
+		]);
+
+		return $response;
 	}
 }
