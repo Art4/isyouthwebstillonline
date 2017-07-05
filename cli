@@ -1,0 +1,64 @@
+<?php
+
+$app = require('bootstrap.php');
+
+// Register cli on container
+$container['cli'] = function ($container)
+{
+	$entity_manager = $container['em'];
+
+	// Setup with all orm and dbal commands
+	$helper_set = \Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($entity_manager);
+
+	$helper_set->set(new \Symfony\Component\Console\Helper\QuestionHelper(), 'question');
+
+	$cli = \Doctrine\ORM\Tools\Console\ConsoleRunner::createApplication($helper_set);
+
+	// Migrations Commands
+	$migration_commands = array(
+		(new \Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand())->setName('doctrine:migrations:diff'),
+		(new \Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand())->setName('doctrine:migrations:execute'),
+		(new \Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand())->setName('doctrine:migrations:generate'),
+		(new \Doctrine\DBAL\Migrations\Tools\Console\Command\LatestCommand())->setName('doctrine:migrations:latest'),
+		(new \Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand())->setName('doctrine:migrations:migrate'),
+		(new \Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand())->setName('doctrine:migrations:status'),
+		(new \Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand())->setName('doctrine:migrations:version'),
+	);
+
+	$settings = $container['settings']['database']['doctrine2']['migrations'];
+
+	$configuration = new \Doctrine\DBAL\Migrations\Configuration\Configuration($entity_manager->getConnection());
+	$configuration->setMigrationsTableName($settings['table_name']);
+	$configuration->setMigrationsDirectory($settings['migrations_directory']);
+	$configuration->setMigrationsNamespace($settings['migrations_namespace']);
+
+	foreach ( $migration_commands as $command )
+	{
+		$command->setMigrationConfiguration($configuration);
+
+		$cli->add($command);
+	}
+
+	// Doctrine 2: Resolving "unknown database type enum requested"
+	// see https://wildlyinaccurate.com/doctrine-2-resolving-unknown-database-type-enum-requested/
+	$platform = $entity_manager->getConnection()->getDatabasePlatform();
+	$platform->registerDoctrineTypeMapping('enum', 'string');
+
+	// Add stats update command
+	$command = new Art4\IsYouthwebStillOnline\Tools\Console\Command\StatsUpdateCommand();
+	$command->setName('stats:update');
+
+	$cli->add($command);
+
+	return $cli;
+};
+
+$cli = $app->getContainer()->get('cli');
+
+// remove "cli"
+$argv = $_SERVER['argv'];
+array_shift($argv);
+
+$input = new \Symfony\Component\Console\Input\StringInput(implode(' ', $argv));
+
+$cli->run($input);
