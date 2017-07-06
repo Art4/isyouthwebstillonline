@@ -41,7 +41,7 @@ class Controller
 
 		$stats = $em->getRepository(Model\StatsAccount::class)->findOneBy(
 			[],
-			['created_at' => 'asc']
+			['created_at' => 'desc']
 		);
 
 		$this->container->view->render($response, 'index.twig', [
