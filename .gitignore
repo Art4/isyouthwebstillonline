@@ -2,6 +2,7 @@
 *.bak
 .DS_Store
 node_modules
+composer.lock
 composer.phar
 config/development/
 config/production/
