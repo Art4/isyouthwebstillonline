@@ -1,131 +1,18 @@
 {
 	"require": {
-		"php": ">=5.4.36",
-		"composer/installers": "~1.0",
-		"fuel/core": "1.7.3",
-		"fuel/auth": "1.7.3",
-		"fuel/email": "1.7.3",
-		"fuel/oil": "1.7.3",
-		"fuel/orm": "1.7.3",
-		"fuel/parser": "1.7.3",
-		"fuelphp/upload": "2.0.2",
-		"monolog/monolog": "1.5.*",
-		"michelf/php-markdown": "1.4.0",
-		"twig/twig": "1.*",
-		"netcarver/textile": "3.5.*",
-		"youthweb/php-youthweb-api": "^0.3.0"
+		"php": "^5.6 || ^7.0",
+		"doctrine/migrations": "^1.5",
+		"doctrine/orm": "^2.5",
+		"slim/slim": "^3.8",
+		"slim/twig-view": "^2.2",
+		"youthweb/php-youthweb-api": "^0.5"
 	},
-	"repositories" : [
-		{
-			"type": "package",
-			"package": {
-				"name": "fuel/auth",
-				"type": "fuel-package",
-				"version": "1.7.3",
-				"dist": {
-					"url": "https://github.com/fuel/auth/archive/1.7/master.zip",
-					"type": "zip"
-				},
-				"source": {
-					"url": "https://github.com/fuel/auth.git",
-					"type": "git",
-					"reference": "1.7/master"
-				}
-			}
-		},
-		{
-			"type": "package",
-			"package": {
-				"name": "fuel/email",
-				"type": "fuel-package",
-				"version": "1.7.3",
-				"dist": {
-					"url": "https://github.com/fuel/email/archive/1.7/master.zip",
-					"type": "zip"
-				},
-				"source": {
-					"url": "https://github.com/fuel/email.git",
-					"type": "git",
-					"reference": "1.7/master"
-				}
-			}
-		},
-		{
-			"type": "package",
-			"package": {
-				"name": "fuel/oil",
-				"type": "fuel-package",
-				"version": "1.7.3",
-				"dist": {
-					"url": "https://github.com/fuel/oil/archive/1.7/master.zip",
-					"type": "zip"
-				},
-				"source": {
-					"url": "https://github.com/fuel/oil.git",
-					"type": "git",
-					"reference": "1.7/master"
-				}
-			}
-		},
-		{
-			"type": "package",
-			"package": {
-				"name": "fuel/orm",
-				"type": "fuel-package",
-				"version": "1.7.3",
-				"dist": {
-					"url": "https://github.com/fuel/orm/archive/1.7/master.zip",
-					"type": "zip"
-				},
-				"source": {
-					"url": "https://github.com/fuel/orm.git",
-					"type": "git",
-					"reference": "1.7/master"
-				}
-			}
-		},
-		{
-			"type": "package",
-			"package": {
-				"name": "fuel/parser",
-				"type": "fuel-package",
-				"version": "1.7.3",
-				"dist": {
-					"url": "https://github.com/fuel/parser/archive/1.7/master.zip",
-					"type": "zip"
-				},
-				"source": {
-					"url": "https://github.com/fuel/parser.git",
-					"type": "git",
-					"reference": "1.7/master"
-				}
-			}
-		},
-		{
-			"type": "package",
-			"package": {
-				"name": "fuel/core",
-				"type": "fuel-package",
-				"version": "1.7.3",
-				"dist": {
-					"url": "https://github.com/fuel/core/archive/1.7/master.zip",
-					"type": "zip"
-				},
-				"source": {
-					"url": "https://github.com/fuel/core.git",
-					"type": "git",
-					"reference": "1.7/master"
-				}
-			}
-		}
-	],
 	"config": {
-		"vendor-dir": "fuel/vendor"
+		"sort-packages": true
 	},
-	"extra": {
-		"installer-paths": {
-			"fuel/core": ["fuel/core"],
-			"fuel/packages/{$name}": ["fuel/auth", "fuel/email", "fuel/oil", "fuel/orm", "fuel/parser"]
+	"autoload": {
+		"psr-4": {
+			"Art4\\IsYouthwebStillOnline\\": "src"
 		}
 	}
 }

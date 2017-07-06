@@ -2,25 +2,8 @@
 *.bak
 .DS_Store
 node_modules
-
-# /
-/composer.phar
-
-# /fuel
-/fuel/vendor/*
-/fuel/core/*
-/fuel/packages/*
-
-# /fuel/app
-/fuel/app/cache/*
-/fuel/app/logs/*
-**/config/development/*.php
-**/config/production/*.php
-**/config/test/*.php
-/fuel/app/tmp/*
-/fuel/app/vendor/*
-
-# /public/vendor
-/public/vendor/*
-!/public/vendor/youthweb/
-
+composer.lock
+composer.phar
+config/development/
+config/production/
+vendor
