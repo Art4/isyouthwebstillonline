@@ -1,4 +1,4 @@
-# youthweb-birthday
+# Is Youthweb still online?
 
 A simple website to save the user stats of Youthweb.
 
@@ -8,7 +8,6 @@ Build with Slim, Twig and Bootstrap.
 
 - PHP >=5.6
 - Composer
-- npm
 
 ## Configuration
 
@@ -32,11 +31,6 @@ return [
 				],
 			],
 		],
-		'youthweb_client' => [
-			'client_id'     => '{client_id}',
-			'client_secret' => '{client_secret}',
-			'redirect_url'  => 'https://example.com/callback_url',
-		],
 	],
 ];
 
@@ -48,12 +42,10 @@ Clone the repository or download and unzip the code into a folder. Run inside th
 
 ```
 php composer.phar install
-npm install
-npm run-script deploy
 php cli doctrine:migrations:migrate
 ```
 
-This installs all dependencies and creates the `style.css`.
+This installs all dependencies.
 
 Now point apache/nginx to `public/index.php` or use the PHP built in server:
 
