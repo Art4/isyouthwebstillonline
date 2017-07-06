@@ -59,7 +59,7 @@ EOT
 		$entityManager->persist($stats);
 		$entityManager->flush();
 
-		$output->writeln('Account stats was succesfully saved.');
+		//$output->writeln('Account stats was succesfully saved.');
 
 		return 0;
 	}
