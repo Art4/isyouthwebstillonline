@@ -15,15 +15,15 @@ return [
 			'default' => [
 				'type'        => 'pdo',
 				'connection'  => [
-					'dsn'        => 'sqlite::memory:',
+					'dsn'        => 'sqlite::memory:', // or mysql:host=localhost;dbname=db-name
 					'username'   => '',
 					'password'   => '',
 					'persistent' => false,
 				],
 				'identifier'   => '`',
 				'table_prefix' => '',
-				'charset'      => 'utf8',
-				'collation'    => 'utf8_unicode_ci',
+				'charset'      => 'utf8mb4',
+				'collation'    => 'utf8mb4_unicode_ci',
 				'enable_cache' => true,
 			],
 			'doctrine2' => [
