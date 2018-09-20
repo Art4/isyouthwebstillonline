@@ -5,7 +5,7 @@
 		"doctrine/orm": "^2.5",
 		"slim/slim": "^3.8",
 		"slim/twig-view": "^2.2",
-		"youthweb/php-youthweb-api": "^0.5"
+		"youthweb/php-youthweb-api": "^0.6"
 	},
 	"config": {
 		"sort-packages": true
