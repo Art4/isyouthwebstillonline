@@ -112,7 +112,7 @@ $container['em'] = function ($container)
 	}
 
 	$config = \Doctrine\ORM\Tools\Setup::createConfiguration($is_dev_mode, $settings['proxy_dir'], $cache);
-	$config->setMetadataDriverImpl(new \Doctrine\Common\Persistence\Mapping\Driver\StaticPHPDriver($settings['entity_pathes']));
+	$config->setMetadataDriverImpl(new \Doctrine\Persistence\Mapping\Driver\StaticPHPDriver($settings['entity_pathes']));
 
 	return \Doctrine\ORM\EntityManager::create($settings['connection'], $config);
 };
