@@ -14,28 +14,26 @@ $container['cli'] = function ($container)
 
 	$cli = \Doctrine\ORM\Tools\Console\ConsoleRunner::createApplication($helper_set);
 
-	// Migrations Commands
-	$migration_commands = array(
-		(new \Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand())->setName('doctrine:migrations:diff'),
-		(new \Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand())->setName('doctrine:migrations:execute'),
-		(new \Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand())->setName('doctrine:migrations:generate'),
-		(new \Doctrine\DBAL\Migrations\Tools\Console\Command\LatestCommand())->setName('doctrine:migrations:latest'),
-		(new \Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand())->setName('doctrine:migrations:migrate'),
-		(new \Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand())->setName('doctrine:migrations:status'),
-		(new \Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand())->setName('doctrine:migrations:version'),
-	);
-
 	$settings = $container['settings']['database']['doctrine2']['migrations'];
 
-	$configuration = new \Doctrine\DBAL\Migrations\Configuration\Configuration($entity_manager->getConnection());
-	$configuration->setMigrationsTableName($settings['table_name']);
-	$configuration->setMigrationsDirectory($settings['migrations_directory']);
-	$configuration->setMigrationsNamespace($settings['migrations_namespace']);
+	$dependencyFactory = \Doctrine\Migrations\DependencyFactory::fromEntityManager(
+		new \Doctrine\Migrations\Configuration\Migration\ConfigurationArray($settings),
+		new \Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager($entity_manager)
+	);
+
+	// Migrations Commands
+	$migration_commands = array(
+		new \Doctrine\Migrations\Tools\Console\Command\DiffCommand($dependencyFactory, 'doctrine:migrations:diff'),
+		new \Doctrine\Migrations\Tools\Console\Command\ExecuteCommand($dependencyFactory, 'doctrine:migrations:execute'),
+		new \Doctrine\Migrations\Tools\Console\Command\GenerateCommand($dependencyFactory, 'doctrine:migrations:generate'),
+		new \Doctrine\Migrations\Tools\Console\Command\LatestCommand($dependencyFactory, 'doctrine:migrations:latest'),
+		new \Doctrine\Migrations\Tools\Console\Command\MigrateCommand($dependencyFactory, 'doctrine:migrations:migrate'),
+		new \Doctrine\Migrations\Tools\Console\Command\StatusCommand($dependencyFactory, 'doctrine:migrations:status'),
+		new \Doctrine\Migrations\Tools\Console\Command\VersionCommand($dependencyFactory, 'doctrine:migrations:version'),
+	);
 
 	foreach ( $migration_commands as $command )
 	{
-		$command->setMigrationConfiguration($configuration);
-
 		$cli->add($command);
 	}
 

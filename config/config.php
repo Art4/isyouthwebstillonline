@@ -32,9 +32,13 @@ return [
 					ROOTPATH.'src'.DS.'Model',
 				],
 				'migrations'      => [
-					'migrations_namespace' => 'Art4\IsYouthwebStillOnline\DoctrineMigrations',
-					'table_name' => 'doctrine_migration_versions',
-					'migrations_directory' => ROOTPATH.'migrations'.DS.'doctrine2'.DS,
+					'table_storage' => [
+						'table_name' => 'doctrine_migration_versions',
+					],
+					'migrations_paths' => [
+						'Art4\IsYouthwebStillOnline\DoctrineMigrations' => ROOTPATH.'migrations'.DS.'doctrine2'.DS,
+					],
+					'check_database_platform' => true,
 				],
 			],
 		],
