@@ -103,13 +103,8 @@ $container['em'] = function ($container)
 
 	$is_dev_mode = ($container['settings']['environment'] !== 'production');
 
-	$cache = null;
-
-	if ( ! $is_dev_mode )
-	{
-		$pool = new $container['cachepool'];
-		$cache = new DoctrineCacheBridge($pool);
-	}
+	$pool = new \Symfony\Component\Cache\Adapter\FilesystemAdapter();
+	$cache = \Doctrine\Common\Cache\Psr6\DoctrineProvider::wrap($pool);
 
 	$config = \Doctrine\ORM\Tools\Setup::createConfiguration($is_dev_mode, $settings['proxy_dir'], $cache);
 	$config->setMetadataDriverImpl(new \Doctrine\Persistence\Mapping\Driver\StaticPHPDriver($settings['entity_pathes']));
