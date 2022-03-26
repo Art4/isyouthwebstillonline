@@ -36,7 +36,19 @@ EOT
 		/* @var $entityManager \Doctrine\ORM\EntityManager */
 		$entityManager = $this->getHelper('em')->getEntityManager();
 
-		$resource = (new \Youthweb\Api\Client)->getResource('stats');
+		$client = new \Youthweb\Api\Client(
+			[
+				'api_version' => '0.20',
+			],
+			[
+				'http_client' => new \Youthweb\Api\HttpClient([
+					// Guzzle config
+					'connect_timeout' => 5.0,
+				]),
+			]
+		);
+
+		$resource = $client->getResource('stats');
 
 		try
 		{
@@ -45,7 +57,9 @@ EOT
 		catch ( \Exception $e )
 		{
 			throw new \Exception(
-				'Something went wrong while request account stats: ' . $e->getMessage()
+				'Something went wrong while request account stats: ' . $e->getMessage(),
+				$e->getCode(),
+				$e
 			);
 
 			return 1;
