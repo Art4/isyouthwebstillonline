@@ -1,4 +1,4 @@
-FROM php:8.0-fpm
+FROM php:8.1-fpm
 
 RUN apt-get update
 RUN apt-get --yes --no-install-recommends install \
@@ -8,7 +8,7 @@ RUN apt-get --yes --no-install-recommends install \
     vim \
     curl \
     build-essential \
-    # pipx \
+    pipx \
     locales \
     zip unzip \
     libfreetype6-dev \
