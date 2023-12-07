@@ -51,10 +51,5 @@ return [
 				],
 			],
 		],
-		'routes' => [
-			'/' => [
-				'GET' => '\Art4\IsYouthwebStillOnline\Controller:getIndex',
-			],
-		],
 	],
 ];
