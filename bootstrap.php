@@ -12,16 +12,12 @@ ini_set('display_errors', 1);
 $config_path = ROOTPATH . 'config';
 $env = getenv('SLIM_ENV') ?: 'development';
 
-$config = new Art4\IsYouthwebStillOnline\Config($config_path, $env);
-
-$app = new \Slim\App($config->getAll());
-
-$container = $app->getContainer();
+$config = (new Art4\IsYouthwebStillOnline\Config($config_path, $env))->getAll();
 
 // Register entity manager on container
-$container['em'] = function ($container)
+$em = (function ($config)
 {
-	$db_settings = $container['settings']['database'];
+	$db_settings = $config['settings']['database'];
 
 	$connection = $db_settings['active'];
 
@@ -101,39 +97,41 @@ $container['em'] = function ($container)
 
 	$settings['connection'] = array_merge($options, $connection_settings['connection']);
 
-	$is_dev_mode = ($container['settings']['environment'] !== 'production');
+	$is_dev_mode = ($config['settings']['environment'] !== 'production');
 
 	$pool = new \Symfony\Component\Cache\Adapter\FilesystemAdapter();
 	$cache = \Doctrine\Common\Cache\Psr6\DoctrineProvider::wrap($pool);
 
-	$config = \Doctrine\ORM\Tools\Setup::createConfiguration($is_dev_mode, $settings['proxy_dir'], $cache);
-	$config->setMetadataDriverImpl(new \Doctrine\Persistence\Mapping\Driver\StaticPHPDriver($settings['entity_pathes']));
+	$em_configuration = \Doctrine\ORM\Tools\Setup::createConfiguration($is_dev_mode, $settings['proxy_dir'], $cache);
+	$em_configuration->setMetadataDriverImpl(new \Doctrine\Persistence\Mapping\Driver\StaticPHPDriver($settings['entity_pathes']));
 
-	return \Doctrine\ORM\EntityManager::create($settings['connection'], $config);
-};
+	return \Doctrine\ORM\EntityManager::create($settings['connection'], $em_configuration);
+})($config);
 
 // Register component on container
-$container['view'] = function ($container)
+$twig = (function (array $config)
 {
-	$view = new \Slim\Views\Twig(
-		$container['settings']['views']['twig']['template_path'],
-		$container['settings']['views']['twig']['environment']
+	$twig = \Slim\Views\Twig::create(
+		$config['settings']['views']['twig']['template_path'],
+		$config['settings']['views']['twig']['environment']
 	);
 
 	// Instantiate and add Slim specific extension
-	$basePath = rtrim(str_ireplace('index.php', '', $container['request']->getUri()->getBasePath()), '/');
-	$view->addExtension(new Slim\Views\TwigExtension($container['router'], $basePath));
+	// $basePath = rtrim(str_ireplace('index.php', '', $container['request']->getUri()->getBasePath()), '/');
+	// $twig->addExtension(new Slim\Views\TwigExtension($container['router'], $basePath));
 
-	return $view;
-};
+	return $twig;
+})($config);
+
+$app = \Slim\Factory\AppFactory::create();
 
 // Add routes to app
-foreach ($container['settings']['routes'] as $pattern => $target)
-{
-	foreach ($target as $method => $callable)
-	{
-		$app->map([$method], $pattern, $callable);
-	}
-}
+$controller = new \Art4\IsYouthwebStillOnline\Controller($em, $twig);
 
-return $app;
+$app->get('/', [$controller, 'getIndex']);
+
+return [
+	'app' => $app,
+	'config' => $config,
+	'em' => $em,
+];

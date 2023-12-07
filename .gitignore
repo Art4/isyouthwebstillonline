@@ -1,9 +1,10 @@
 *~
 *.bak
 .DS_Store
-node_modules
-composer.lock
-composer.phar
-config/development/
-config/production/
-vendor
+/cache
+/node_modules
+/composer.lock
+/composer.phar
+/config/development/
+/config/production/
+/vendor

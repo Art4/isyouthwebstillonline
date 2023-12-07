@@ -2,9 +2,11 @@
 
 namespace Art4\IsYouthwebStillOnline;
 
+use Doctrine\ORM\EntityManager;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Slim\Views\Twig;
 
 /**
  * Controller class
@@ -12,18 +14,19 @@ use Psr\Http\Message\ResponseInterface;
 class Controller
 {
 	/**
-	 * Interop\Container\ContainerInterface $container
+	 * @var EntityManager
 	 */
-	private $container;
+	private $em;
 
 	/**
-	 * Constructor
-	 *
-	 * @param Interop\Container\ContainerInterface $container
+	 * @var Twig
 	 */
-	public function __construct(ContainerInterface $container)
+	private $twig;
+
+	public function __construct(EntityManager $em, Twig $twig)
 	{
-		$this->container = $container;
+		$this->em = $em;
+		$this->twig = $twig;
 	}
 
 	/**
@@ -37,14 +40,12 @@ class Controller
 	 */
 	public function getIndex(ServerRequestInterface $request, ResponseInterface $response, $args)
 	{
-		$em = $this->container['em'];
-
-		$stats = $em->getRepository(Model\StatsAccount::class)->findOneBy(
+		$stats = $this->em->getRepository(Model\StatsAccount::class)->findOneBy(
 			[],
 			['created_at' => 'desc']
 		);
 
-		$this->container->view->render($response, 'index.twig', [
+		$this->twig->render($response, 'index.twig', [
 			'user_total' => ( is_object($stats) ) ? $stats->getUserTotal() : 0,
 			'user_online' => ( is_object($stats) ) ? $stats->getUserOnline() : 0,
 		]);

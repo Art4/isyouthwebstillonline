@@ -1,12 +1,10 @@
 <?php
 
-$app = require('bootstrap.php');
+$services = require('bootstrap.php');
 
 // Register cli on container
-$container['cli'] = function ($container)
+$cli = (function ($entity_manager, array $config)
 {
-	$entity_manager = $container['em'];
-
 	// Setup with all orm and dbal commands
 	$helper_set = \Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($entity_manager);
 
@@ -14,7 +12,7 @@ $container['cli'] = function ($container)
 
 	$cli = \Doctrine\ORM\Tools\Console\ConsoleRunner::createApplication($helper_set);
 
-	$settings = $container['settings']['database']['doctrine2']['migrations'];
+	$settings = $config['settings']['database']['doctrine2']['migrations'];
 
 	$dependencyFactory = \Doctrine\Migrations\DependencyFactory::fromEntityManager(
 		new \Doctrine\Migrations\Configuration\Migration\ConfigurationArray($settings),
@@ -49,9 +47,7 @@ $container['cli'] = function ($container)
 	$cli->add($command);
 
 	return $cli;
-};
-
-$cli = $app->getContainer()->get('cli');
+})($services['em'], $services['config']);
 
 // remove "cli"
 $argv = $_SERVER['argv'];

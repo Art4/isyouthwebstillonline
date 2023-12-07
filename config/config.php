@@ -15,7 +15,7 @@ return [
 			'default' => [
 				'type'        => 'pdo',
 				'connection'  => [
-					'dsn'        => 'sqlite::memory:', // or mysql:host=localhost;dbname=db-name
+					'dsn'        => 'sqlite:'.ROOTPATH.'cache'.DS.'db-dev.sq3', // or mysql:host=localhost;dbname=db-name
 					'username'   => '',
 					'password'   => '',
 					'persistent' => false,
@@ -47,13 +47,8 @@ return [
 				'template_path' => ROOTPATH.'templates'.DS,
 				'environment' => [
 					'auto_reload' => false,
-					'cache_path' => ROOTPATH.'cache'.DS.'twig'.DS,
+					'cache' => ROOTPATH.'cache'.DS.'twig'.DS,
 				],
-			],
-		],
-		'routes' => [
-			'/' => [
-				'GET' => '\Art4\IsYouthwebStillOnline\Controller:getIndex',
 			],
 		],
 	],
