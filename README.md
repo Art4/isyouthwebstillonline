@@ -6,7 +6,7 @@ Build with Slim, Twig and Bootstrap.
 
 ## Requirements
 
-- PHP >= 8.0
+- PHP >= 8.1
 - Composer
 
 ## Configuration

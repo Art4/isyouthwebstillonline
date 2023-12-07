@@ -1,6 +1,6 @@
 {
 	"require": {
-		"php": "^8.0",
+		"php": "^8.1",
 		"doctrine/migrations": "^3.0",
 		"doctrine/orm": "^2.5",
 		"slim/http": "^1.3",

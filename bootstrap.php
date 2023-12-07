@@ -130,4 +130,8 @@ $controller = new \Art4\IsYouthwebStillOnline\Controller($em, $twig);
 
 $app->get('/', [$controller, 'getIndex']);
 
-return $app;
+return [
+	'app' => $app,
+	'config' => $config,
+	'em' => $em,
+];
