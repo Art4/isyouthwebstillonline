@@ -111,16 +111,16 @@ $em = (function ($config)
 // Register component on container
 $twig = (function (array $config)
 {
-	$view = new \Slim\Views\Twig(
+	$twig = \Slim\Views\Twig::create(
 		$config['settings']['views']['twig']['template_path'],
 		$config['settings']['views']['twig']['environment']
 	);
 
 	// Instantiate and add Slim specific extension
 	// $basePath = rtrim(str_ireplace('index.php', '', $container['request']->getUri()->getBasePath()), '/');
-	// $view->addExtension(new Slim\Views\TwigExtension($container['router'], $basePath));
+	// $twig->addExtension(new Slim\Views\TwigExtension($container['router'], $basePath));
 
-	return $view;
+	return $twig;
 })($config);
 
 $app = \Slim\Factory\AppFactory::create();

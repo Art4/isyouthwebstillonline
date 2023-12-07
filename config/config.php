@@ -47,7 +47,7 @@ return [
 				'template_path' => ROOTPATH.'templates'.DS,
 				'environment' => [
 					'auto_reload' => false,
-					'cache_path' => ROOTPATH.'cache'.DS.'twig'.DS,
+					'cache' => ROOTPATH.'cache'.DS.'twig'.DS,
 				],
 			],
 		],
