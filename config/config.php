@@ -15,7 +15,7 @@ return [
 			'default' => [
 				'type'        => 'pdo',
 				'connection'  => [
-					'dsn'        => 'sqlite::memory:', // or mysql:host=localhost;dbname=db-name
+					'dsn'        => 'sqlite:'.ROOTPATH.'cache'.DS.'db-dev.sq3', // or mysql:host=localhost;dbname=db-name
 					'username'   => '',
 					'password'   => '',
 					'persistent' => false,
